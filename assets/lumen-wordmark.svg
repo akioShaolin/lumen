@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" role="img" aria-label="Lúmen — Afinador cromático">
+  <rect width="600" height="160" rx="20" fill="#090B12"/>
+  <g fill="none" stroke="#F4F7FF" stroke-width="5" stroke-linecap="square">
+    <path d="M45 40v62h40M120 40v43q0 19 21 19t21-19V40m-23-12 12-13M200 102V40l25 35 25-35v62M290 40v62h42m-42-62h42m-42 30h32M375 102V40l45 62V40"/>
+  </g>
+  <path d="M460 40v33q0 15 17 15V40m0 48v16h26" fill="none" stroke="#35E8FF" stroke-width="5"/>
+  <text x="45" y="139" fill="#A7B0C0" font-family="sans-serif" font-size="15" letter-spacing="4">AFINADOR CROMÁTICO</text>
+</svg>

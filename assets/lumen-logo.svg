@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108" role="img" aria-label="Lúmen: diapasão L e onda">
+  <defs><linearGradient id="light"><stop stop-color="#35E8FF"/><stop offset="1" stop-color="#A78BFA"/></linearGradient></defs>
+  <rect width="108" height="108" rx="24" fill="#090B12"/>
+  <path d="M38 29v26q0 15 16 15V29M54 70v10h17" fill="none" stroke="url(#light)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M27 53h6l4-8 6 17 7-24 7 21 5-10 5 4h14" fill="none" stroke="#FF4FD8" stroke-width="1.7" stroke-linejoin="round"/>
+</svg>

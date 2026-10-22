@@ -1,0 +1,12 @@
+# Limitações conhecidas
+
+- Build Android/lint/instrumentação, APK, screenshot e medições físicas não executados: sem SDK/JDK 17 no ambiente inicial. A compilação isolada JVM validou DSP, não a integração Android ou Compose.
+- Intervalo algorítmico 20–2000 Hz; faixa física do microfone não medida. 20 Hz exige janela longa e hardware apropriado; um alto-falante do próprio telefone não valida essa capacidade.
+- Afinador monofônico. Ausência da fundamental e áudio ambíguo não têm solução universal. Heurísticas de periodicidade/espectro podem ainda cometer erros com sinais reais. Confiança não é probabilidade calibrada. Não há classificador de acordes.
+- Testes sintéticos pequenos e determinísticos não substituem corpus gravado. Não foi medido erro de oitava em instrumentos reais. A validação temporal exige outro quadro para confirmar grandes saltos, mas não ranqueia os candidatos espectrais usando histórico.
+- Janelas grandes respondem com atraso e misturam ataques/trocas. Não há supressor explícito do ataque de palheta no afinador; análise de bateria descarta início ajustável. FFT não resolve componentes arbitrariamente próximas.
+- Alguma alocação limitada por quadro de análise existe (resultados, listas e arrays de espectro). Nenhum benchmark em telefone, CPU, bateria ou temperatura foi realizado. Saturação é uma heurística por limiar digital, não medição analógica de clipping anterior ao ADC.
+- Captura tenta taxas/fontes suportadas, mostra rota e reinicia histórico quando ela muda. Não há seletor explícito de dispositivos externos: usa rota escolhida pelo Android. Compatibilidade USB não garantida.
+- Bateria experimental: detecta subida rápida e compara picos em duas metades; golpes fracos/rápidos ou ruído podem falhar. Não estima automaticamente modo físico, fundamental global ou nota universal. A comparação acompanha o pico escolhido pelo usuário, podendo precisar nova seleção em grandes mudanças.
+- Persistência local, acessibilidade e microfone têm implementação, mas precisam de teste Android. Fonte ampliada pode exigir rolagem; a barra não está ancorada à borda da viewport. Congelamento aplica-se ao espectro; métricas ao vivo continuam atualizando.
+- Projeto e ativos originais aguardam escolha de licença pelo titular. Identificador `br.com.lumen` é provisório e disponibilidade de marca não foi verificada. Nenhuma publicação é autorizada/realizada nesta entrega.

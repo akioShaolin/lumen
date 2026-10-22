@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" role="img" aria-label="Lúmen — Afinador cromático Android offline">
+  <rect width="1280" height="640" fill="#090B12"/>
+  <g fill="none" stroke-width="2"><path d="M0 370C170 370 160 170 320 270S470 470 620 330 780 200 920 330s180 60 360-20" stroke="#35E8FF"/><path d="M0 390C170 390 160 210 320 290S470 450 620 350 780 230 920 350s180 60 360-20" stroke="#A78BFA"/></g>
+  <rect x="110" y="110" width="1060" height="420" rx="32" fill="#141925" fill-opacity=".9"/>
+  <path d="M210 205v95q0 50 55 50V205m0 145v49h70" fill="none" stroke="#35E8FF" stroke-width="14" stroke-linecap="round"/>
+  <text x="420" y="290" fill="#F4F7FF" font-family="sans-serif" font-size="82" letter-spacing="20">LÚMEN</text>
+  <text x="424" y="350" fill="#A7B0C0" font-family="sans-serif" font-size="30">Afinador cromático</text>
+  <text x="424" y="408" fill="#46F5AE" font-family="sans-serif" font-size="22">Android · Offline · Som, luz e precisão</text>
+  <text x="424" y="464" fill="#A7B0C0" font-family="sans-serif" font-size="17">Identidade vetorial — não é captura de tela do aplicativo</text>
+</svg>
