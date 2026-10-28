@@ -8,6 +8,7 @@ private fun verify(condition: Boolean, message: String) { checks++; check(condit
 private fun tone(n: Int, rate: Int, hz: Double, harmonics: List<Double> = listOf(0.6), phase: Double = 0.37): DoubleArray = DoubleArray(n) { i -> harmonics.mapIndexed { h,a -> a*sin(2*PI*hz*(h+1)*i/rate+phase) }.sum() }
 
 fun main() {
+    checks += verifyPresentation()
     var worst = 0.0; var octaveErrors = 0; var tones = 0
     val started = System.nanoTime()
     for(rate in listOf(44100,48000)) {

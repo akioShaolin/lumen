@@ -12,6 +12,9 @@ Nenhuma biblioteca DSP externa é distribuída: FFT/MPM/matemática e testes for
 | Lifecycle | 2.9.0 | AndroidX Apache-2.0 |
 | Compose Material3/UI | BOM fixada | AndroidX Apache-2.0 |
 | Coroutines transitivas | geridas por AndroidX | Apache-2.0, https://github.com/Kotlin/kotlinx.coroutines |
+| Compose UI Test JUnit4 / Test Manifest | BOM fixada | AndroidX Apache-2.0; somente testes/instrumentação e suporte debug, https://developer.android.com/develop/ui/compose/testing |
+| AndroidX Test Runner | 1.6.2 | Apache-2.0; somente APK de testes, https://github.com/android/android-test |
+| JUnit transitivo dos testes | 4.13.2 | Eclipse Public License 1.0, conforme POM resolvido; somente testes, https://github.com/junit-team/junit4 |
 
 Wrapper baixado da tag oficial v8.11.1; SHA-256 do JAR: `2db75c40782f5e8ba1fc278a5574bab070adccb2d21ca5a6e5ed840888448046`. Scripts oficiais preservam seus cabeçalhos de licença. Dependências transitivas serão resolvidas no primeiro build Android; o grafo Android completo ainda não foi produzido. Gere-o com `.\gradlew.bat :app:dependencies` e confira avisos antes de distribuir.
 

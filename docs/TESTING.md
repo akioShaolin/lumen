@@ -1,5 +1,39 @@
 # Verificação e validação física
 
+## Versão 0.2.0 — apresentação e espectro, 27/10/2026
+
+Comando final executado: `gradlew.bat :dsp:verifyDsp :app:assembleDebug :app:lintDebug :app:assembleDebugAndroidTest --console=plain --max-workers=2`. Resultado: **BUILD SUCCESSFUL**, 75 tarefas, 1 min 58 s. Testes de produção JVM: **245 verificações passaram** (155 anteriores e 90 novas de apresentação/espectro). Mantidos 22 tons limpos, pior erro 0,00563 cent e zero erros de oitava nesse conjunto sintético.
+
+Os novos testes cobrem fronteira de semitom, confirmação em 300 ms, evidência descontínua, troca E2→E1, suavização logarítmica, coerência frequência/cents/alvo manual, retenção de 500 ms, watchdog, status, ruído, parcial senoidal fraco ao lado de outro forte, faixa +21 semitons, remapeamento real de picos históricos e decaimento idêntico em atualizações de 20/100 ms. Duração da suíte nessa execução concorrente: 6493,7 ms; microbenchmark DSP 38,43 ms/quadro de 32768. Não são medições Android, nem comparação controlada de desempenho.
+
+Lint final: **zero erros e 14 avisos** — versões mais recentes, plural, backup, ícones/qualificador, sugestões KTX e dois recursos antigos sem uso. Sem supressão/baseline. A primeira tentativa desta rodada falhou por HTTP 502 no download de uma dependência de testes; a repetição resolveu. Uma compilação intermediária dos testes pegou o cabeçalho recém-editado antes da recompilação principal; a execução final recompilou ambos e passou.
+
+`StableLayoutTest` foi compilado e empacotado em `app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk`. Verifica limites dos componentes reais em 320 dp, fontes 100%/200%, alternância de textos curtos/longos, leitura ao vivo/retida/inválida e acesso por rolagem. **Não executado:** não há emulador instalado, e `adb devices` não listou aparelhos. Portanto, não se declara validação visual, TalkBack ou microfone em dispositivo.
+
+APK para instalar: `app/build/outputs/apk/debug/app-debug.apk`, versão **0.2.0**, versionCode **2**, 9.789.566 bytes. Assinatura debug v2 validada com `apksigner verify --verbose`. SHA-256: `44DD938D94EC5CE91C5543CD8849CC5D9C2723CF123899CB1B1E73F9B71497BF`. Manifesto mesclado conferido: sem permissão de Internet. Nenhum novo APK foi fornecido com o vídeo/texto para comparar os binários.
+
+Para executar a instrumentação quando houver aparelho/emulador disponível:
+
+```powershell
+.\gradlew.bat :app:connectedDebugAndroidTest --console=plain --max-workers=2
+```
+
+Comportamento, temporizações, fórmulas e limitações: [PRESENTATION](PRESENTATION.md). Os resultados a seguir são históricos da preparação anterior.
+
+## Preparação da versão 0.1.0 em 27/10/2026
+
+Nesta máquina Windows, com Microsoft OpenJDK 17.0.21, os mesmos testes de produção passaram tanto pelo script isolado quanto por `gradlew.bat -PdspOnly :dsp:verifyDsp`: **155 verificações, 22 senoides, pior erro limpo 0,00563 cent, zero erros de oitava nesse conjunto**. O Gradle terminou com `BUILD SUCCESSFUL`.
+
+Script isolado: duração 2089,0 ms e benchmark 14,37 ms/quadro de 32768. Gradle, com preparação Android concorrente: duração 8974,1 ms e benchmark 73,52 ms/quadro. A variação sob carga impede tratar esses tempos como desempenho de referência; nenhum desses resultados mede CPU ou latência Android.
+
+JDK e SDK foram preparados localmente em `.tools/`; veja [preparação Windows](WINDOWS.md). `adb devices` não listou aparelho conectado. Nenhum teste físico foi realizado nesta sessão. Os resultados abaixo de 22/10 são históricos.
+
+Build Android: `gradlew.bat :app:assembleDebug :app:lintDebug --console=plain` terminou com **BUILD SUCCESSFUL** após corrigir a verificação explícita de `RECORD_AUDIO` em `CaptureEngine`, incluindo tratamento de `SecurityException` caso a permissão seja revogada. A primeira tentativa havia gerado APK, mas falhado no lint por `MissingPermission`; o erro foi corrigido sem supressão nem baseline.
+
+Lint final: zero erros e dez avisos (versões mais novas de dependências, plural de acessibilidade, regras de backup, qualificadores/ícone e sugestões KTX). Relatório local: `app/build/reports/lint-results-debug.html`. As versões fixadas não foram atualizadas apenas para eliminar avisos.
+
+APK: `app/build/outputs/apk/debug/app-debug.apk`; assinatura debug v2 validada por `apksigner verify --verbose`. SHA-256: `FE206BB5737C1DC96A690650A2378EA0A781B9D2DB1E1AA6C670C73026F12549`. Não houve instalação no celular, emulador ou execução remota de CI.
+
 ## Execução local realizada em 22/10/2026
 
 Compilador Kotlin embeddable 2.1.20, alvo bytecode 1.8, Oracle JRE 1.8.0_431, Windows 11 x64, Intel Core i5-1135G7 @2,40 GHz (4 núcleos/8 threads). Fontes de produção de `dsp/src/main` e verificações de `dsp/src/test` compiladas juntas, sem reimplementação do algoritmo. O build normal usa JDK17; o caminho isolado permitiu testar no ambiente com apenas JRE8.

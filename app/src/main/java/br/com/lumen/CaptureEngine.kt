@@ -1,6 +1,8 @@
 package br.com.lumen
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.media.*
 import android.media.audiofx.*
 import android.os.Build
@@ -10,7 +12,7 @@ import br.com.lumen.dsp.*
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.atomic.AtomicBoolean
 
-data class CaptureFrame(val analysis: Analysis, val drum: DrumResult?, val rate: Int, val source: Int, val route: String, val overruns: Int)
+data class CaptureFrame(val analysis: Analysis, val drum: DrumResult?, val rate: Int, val source: Int, val route: String, val overruns: Int, val generation: Int = 0)
 class CaptureException(message: String) : IllegalStateException(message)
 
 /** Two workers with a bounded, recycled block pool. stop() unblocks AudioRecord.read. */
@@ -30,6 +32,7 @@ class CaptureEngine(private val context: Context, private val frame: (CaptureFra
 
     @Synchronized fun start() {
         if (!running.compareAndSet(false, true)) return
+        routeGeneration.incrementAndGet()
         ready.clear(); free.clear(); repeat(10) { free.offer(DoubleArray(1024)) }; overruns = 0
         captureThread = Thread({
             var record: AudioRecord? = null
@@ -37,12 +40,20 @@ class CaptureEngine(private val context: Context, private val frame: (CaptureFra
             val manager = context.getSystemService(AudioManager::class.java)
             var callback: AudioManager.AudioRecordingCallback? = null
             try {
+                if (context.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                    throw CaptureException(context.getString(R.string.permission))
+                }
                 val sources = if (manager.getProperty(AudioManager.PROPERTY_SUPPORT_AUDIO_SOURCE_UNPROCESSED) == "true") listOf(MediaRecorder.AudioSource.UNPROCESSED, MediaRecorder.AudioSource.VOICE_RECOGNITION, MediaRecorder.AudioSource.MIC) else listOf(MediaRecorder.AudioSource.VOICE_RECOGNITION, MediaRecorder.AudioSource.MIC)
                 var source = 0
                 search@ for (rate in listOf(48000,44100)) for (s in sources) {
                     val minimum = AudioRecord.getMinBufferSize(rate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT)
                     if (minimum <= 0) continue
-                    val candidate = try { AudioRecord(s, rate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, maxOf(minimum*2,8192)) } catch (_: RuntimeException) { continue }
+                    val candidate = try {
+                        AudioRecord(s, rate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, maxOf(minimum*2,8192))
+                    } catch (_: SecurityException) {
+                        // Permission may be revoked between the check and recorder creation.
+                        throw CaptureException(context.getString(R.string.permission))
+                    } catch (_: RuntimeException) { continue }
                     if (candidate.state == AudioRecord.STATE_INITIALIZED) { record = candidate; source = s; break@search }
                     candidate.release()
                 }
@@ -135,7 +146,7 @@ class CaptureEngine(private val context: Context, private val frame: (CaptureFra
                 if (level < gateDb) result = result.copy(pitch = Pitch(null,0.0,false), dbfs = level)
                 result = result.copy(pitch = stability.validate(result.pitch))
                 val routeName = recorder?.routedDevice?.productName?.toString().orEmpty()
-                frame(CaptureFrame(result, drum, rate, source, routeName, overruns))
+                frame(CaptureFrame(result, drum, rate, source, routeName, overruns, route))
             }
         } catch (_: InterruptedException) { } catch (e: Throwable) { if (running.get()) { failure(e); stop() } }
     }

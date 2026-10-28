@@ -10,4 +10,6 @@ Layout em coluna rolável: marca/referência/configurações, modos, permissão/
 
 Texto acompanha cores, espectro tem descrição e lista textual de picos. Estados indicados por texto; status com live region moderada. Sem brilho forte, falsas ondas ou fake measurements. TalkBack, fonte 200%, contraste em dispositivos e controles rotulados precisam de teste manual; não foram declarados aprovados. Checklist em TESTING.
 
+Na versão 0.2.0, `StableText` reserva a altura das variantes na largura/escala de fonte atuais; a lista de picos mantém linhas mesmo sem dados. Status curtos têm orientações em diálogo separado. Cor/opacidade transitam em 120 ms, sem animação de tamanho. Leitura retida é explicitamente histórica. O espectro distingue atual ciano e histórico violeta; eixo musical e tempos estão documentados em [PRESENTATION](PRESENTATION.md). Testes Compose de limites foram adicionados para 320 dp e fonte 100%/200%; a execução precisa de Android.
+
 As duas imagens fornecidas foram usadas como direção estética/funcional, sem inclusão como tela do app ou cópia dos logos. Documentos e anexos originais foram preservados. Não há assets de terceiros incorporados aos vetores novos. A licença dos novos ativos permanece pendente junto ao restante do código original.
